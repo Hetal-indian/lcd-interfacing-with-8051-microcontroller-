@@ -1,0 +1,59 @@
+# include <reg51.h>
+sbit rs=P1^0 ;
+sbit rw=P1^1 ;
+sbit en=P1^2 ;
+void lcdcmd (unsigned char);
+void lcddat (unsigned char);
+void delay ();
+
+void main ()
+{
+	P2 = 0x00 ; // out-put declaratio , "data" lines d0-d7 connected with P2 
+	while (1)
+	{
+		lcdcmd(0x38); // 5X7 matrix crystal
+		delay ();
+		lcdcmd (0x01); // clear screen
+		delay ();
+		lcdcmd (0x10); // curser on blinking 
+		delay ();
+		lcdcmd (0x0C); // display on
+		delay ();
+		lcddat ('0');
+		delay ();
+		lcddat ('H');
+		delay ();
+		lcddat ('e');
+		delay ();
+		lcddat ('l');
+		delay ();
+		lcddat ('l');
+		delay ();
+		lcddat ('o');
+		delay ();
+	}
+}
+void lcdcmd (unsigned char v)
+{
+	P2 = v;
+	rs = 0;
+	rw =0;
+	en =1;
+	delay ();
+	en=0;
+}
+void lcddat (unsigned char v)
+{
+	P2 = v;
+	rs =1;
+	rw =0;
+	en =1;
+	delay ();
+	en=0;
+}
+void delay ()
+{
+	unsigned int i ;
+	for (i=0 ; i<12000 ; i++);
+}
+	
